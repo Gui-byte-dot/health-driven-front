@@ -30,6 +30,7 @@ export default function Scheduled(){
         //   setAppointments(res.data);
           console.log(res.data);
           setAppointments(res.data);
+          
           /* console.log(res.data); */
         });
       }, []);
@@ -52,11 +53,14 @@ export default function Scheduled(){
                     <p>Especialidade: {appointment.especialidade}</p>
                     <p>Data: {appointment.date}</p>
                     <p>Horário: {appointment.hours}</p>
+                    <hr></hr>
                 </div>
             ))}
         </>
     )
 }
+
+
 
 
 const Header = styled.div`
