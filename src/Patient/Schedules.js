@@ -45,18 +45,19 @@ export default function Scheduled(){
                 </Title>
                 <ImageUser src={image} alt="imagemusuario" />
             </Header>
-            <p>Consultas Marcadas</p>
+            <TitleAppointments>Consultas Marcadas</TitleAppointments>
             {appointments.map((appointment) => (
                 <div>
-                    <p>{appointment.nome}</p>
-                    <p>{appointment.especialidade}</p>
-                    <p>{appointment.date}</p>
-                    <p>{appointment.hours}</p>
+                    <p>Nome do doutor: {appointment.nome}</p>
+                    <p>Especialidade: {appointment.especialidade}</p>
+                    <p>Data: {appointment.date}</p>
+                    <p>Horário: {appointment.hours}</p>
                 </div>
             ))}
         </>
     )
 }
+
 
 const Header = styled.div`
     display:flex;
@@ -81,6 +82,15 @@ const Title = styled.div`
         font-family:Sans-serif;
         margin-left:5px;
     }
+`
+
+const TitleAppointments = styled.p`
+    font-family:Sans-serif;
+    font-size:25px;
+    display:flex;
+    justify-content:center;
+    color:green;
+    font-weight:700;
 `
 
 const ImageUser = styled.img`

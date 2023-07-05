@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useContext} from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { LoginContext } from "../auth";
 import { GiHealthNormal } from "react-icons/gi";
@@ -14,24 +14,17 @@ export default function AppointmentPatient() {
     const [doctor, setDoctor] = useState({})
     const { image } = useContext(LoginContext);
     const { name } = useContext(LoginContext);
-    // const {id} = useContext(LoginContext);
     const [date, setDate] = useState("");
-    const [hours, setHours] = useState("")
+    const [hours, setHours] = useState("");
+    const [active, setActive] = useState();
+
 
     console.log(result);
 
-    const [myStyle, setMyStyle] = useState({});
 
 
 
-    const handleClick = (id) => {
-        setMyStyle(prevState => ({
-            ...myStyle,
-            [id]: !prevState[id]
-        }));
-        console.log(result[id].id)
-        setDoctor(result[id].id);
-    }
+
 
     const style = {
         color: "green",
@@ -57,12 +50,12 @@ export default function AppointmentPatient() {
         });
     }
 
-    function marcar(event){
+    function marcar(event) {
         event.preventDefault();
         const authToken = JSON.parse(localStorage.getItem("authToken"));
         console.log("olá");
-        
-        const request = axios.post(`http://localhost:5000/patient/appointment`,{
+
+        const request = axios.post(`http://localhost:5000/patient/appointment`, {
             doctor_id: doctor,
             date,
             hours
@@ -71,8 +64,6 @@ export default function AppointmentPatient() {
         });
         request.then((res) => {
             console.log(res.data);
-            localStorage.setItem("authToken", JSON.stringify(res.data));
-           
 
         })
         request.catch((err) => {
@@ -103,11 +94,19 @@ export default function AppointmentPatient() {
                     <>
                         <div key={i}
                             style={{
-                                backgroundColor: myStyle[`${i}`]
+                                backgroundColor: active === i
                                     ? "green"
                                     : "white"
                             }}
-                            onClick={() => handleClick(i)} >
+                            onClick={() => {
+                                if (active === i) {
+                                  setActive();
+                                } else {
+                                  setActive(i);
+                                  setDoctor(result[i].id);
+
+                                }
+                              }} >
                             <p key={esp.id}>Nome: {esp.nome}</p>
                             <p>Especialidade: {esp.especialidade}</p>
                         </div>
@@ -117,16 +116,19 @@ export default function AppointmentPatient() {
                 <input type="time" step="10" placeholder="Escolha o horário" value={hours} onChange={(e) => setHours(e.target.value)}></input>
                 <input type="date" placeholder="Escolha a data" value={date} onChange={(e) => setDate(e.target.value)}></input>
                 <button type="submit">Marcar</button>
-
+                <Link to="/patient/scheduled">
+                    <button>Consultas</button>
+                </Link>
+                
             </ResultSearch>
-            <Link to="/patient/scheduled">
-                <button>Consultas</button>
-            </Link>
+            
+                
 
 
         </>
     )
 }
+
 
 const ResultSearch = styled.form`
     display:flex;
@@ -139,6 +141,19 @@ const ResultSearch = styled.form`
         height:40px;
         border-radius:20px;
         margin-top:20px;
+    }
+    button{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        width:150px;
+        border-radius:10px;
+        margin-top:10px;
+        height:45px;
+        background-color:green;
+        color:white;
+        font-family:Sans-Serif
+        font-size:40px;
     }
 `
 const TitleName = styled.p`
